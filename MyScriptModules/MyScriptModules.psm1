@@ -1,4 +1,4 @@
-# Counts how many available or loaded Cmdlets are using the piped values as paramernames
+# Counts how many available or loaded Cmdlets are using the piped values as parameternames
 function Get-BPParameterCount {
 	[CmdletBinding()]
     param (
