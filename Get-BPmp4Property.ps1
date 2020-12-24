@@ -60,7 +60,6 @@ PROCESS {
                 'Bitrate' = [int] $($shellfolder.GetDetailsOf($shellfile, 320) -replace "\D*")
                 'Duration' = $shellfolder.GetDetailsOf($shellfile, 27)
                 'Path' = $currentItem.FullName
-                # 'SizeCalc' = "$('{0:N0}' -f (($currentItem.Length / 1MB))) MB"
                 'Size' = $shellfolder.GetDetailsOf($shellfile, 1)
             }
             $out += $resobj
