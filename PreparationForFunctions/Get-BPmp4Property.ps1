@@ -48,13 +48,13 @@ PROCESS {
             $resobj = [PSCustomObject]@{
                 'Width' = $shellfolder.GetDetailsOf($shellfile, 316)
                 'Height' = $shellfolder.GetDetailsOf($shellfile, 314)
-                'FPS' = ($shellfolder.GetDetailsOf($shellfile, 315)).substring(1,5)
+                'FPS' = ($shellfolder.GetDetailsOf($shellfile, 315)) -replace "[^\d{1,3}\.\d{1,3}]"
 
                 'Comp' = switch (($shellfolder.GetDetailsOf($shellfile, 311))) {
                     '{34363248-0000-0010-8000-00AA00389B71}' { 'H264' }
                     '{43564548-0000-0010-8000-00AA00389B71}' { 'HEVC' }
                     '{3253344D-0000-0010-8000-00AA00389B71}' { 'M4S2' }
-                    Default {$currentItem}
+                    Default {$_}
                 }
 
                 'Bitrate' = [int] $($shellfolder.GetDetailsOf($shellfile, 320) -replace "\D*")
