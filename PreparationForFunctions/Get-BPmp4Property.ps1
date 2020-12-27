@@ -4,11 +4,14 @@
 
 .DESCRIPTION
     Get-BPmp4Property is a function that returns a list of properties of mp4 files.
-    Use Get-ChildItem to pipe the files into the function, it only evaluates the ones
-    with .mp4 extension.
+    Use Get-ChildItem to pipe the files into the function or use full path.
+    It only evaluates files with .mp4 extension.
 
 .EXAMPLE
-    Get-ChildItem C:\files\* | Get-BPmp4Property
+    PS C:\> Get-ChildItem C:\files\* | Get-BPmp4Property
+
+.EXAMPLE
+    PS C:\> Get-BPmp4Property C:\test.mp4
 
 .INPUTS
     System.IO.FileInfo
@@ -16,26 +19,26 @@
 .OUTPUTS
     PSCustomObject
 
+.PARAMETER Path
+    You can pipeline full path or using Get-ChildItem
+
 .NOTES
     Tested on PowerShell 5.1, Windows 10 Pro
 #>
 
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory,
-                ValueFromPipeline, ValueFromPipelineByPropertyName)]
-    [System.IO.FileInfo[]]$Name
+    [Parameter(ValueFromPipeline)]
+               [System.IO.FileInfo]$Path
 )
 
-BEGIN {}
+BEGIN {$shell = New-Object -COMObject Shell.Application}
 
 PROCESS {
 
     $out = @()
 
-    $shell = New-Object -COMObject Shell.Application
-
-    foreach($currentItem in $Name){
+    foreach($currentItem in $Path){
 
         if ($currentItem.extension -eq '.mp4') {
 
