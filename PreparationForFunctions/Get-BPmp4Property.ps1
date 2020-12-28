@@ -31,8 +31,8 @@
 
 .PARAMETER Path
     Specifies the path to a file. Wildcard characters are prohibited.
-    It can evaluate one file using full path,
-    for multiple files use Get-ChildItem and pipe into this function.
+    It can evaluate one file using full path, for multiple files
+    use Get-ChildItem and pipe the result into this function.
 
 .NOTES
     Tested on PowerShell 5.1, Windows 10 Pro
