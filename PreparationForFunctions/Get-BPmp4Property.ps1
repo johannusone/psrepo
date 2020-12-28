@@ -13,7 +13,7 @@
             FPS      : frames / second
             Comp     : video compression type
             Bitrate  : average bitrate
-            Duration : duriation in HH:mm:ss
+            Duration : duration in hh:mm:ss
             Path     : full path
             Size     : file size in MB
 
@@ -80,9 +80,6 @@ PROCESS {
             $out += $resobj
         }
     }
-
     Write-Output $out
 }
-
 END {}
-
