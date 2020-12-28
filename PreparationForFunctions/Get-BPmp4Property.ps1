@@ -7,6 +7,16 @@
     Use Get-ChildItem to pipe the files into the function or use full path.
     It only evaluates files with .mp4 extension.
 
+    Returns:
+            Width    : horizontal pixel count
+            Height   : vertical pixel count
+            FPS      : frames / second
+            Comp     : video compression type
+            Bitrate  : average bitrate
+            Duration : duriation in HH:mm:ss
+            Path     : full path
+            Size     : file size in MB
+
 .EXAMPLE
     PS C:\> Get-ChildItem C:\files\* | Get-BPmp4Property
 
@@ -20,7 +30,7 @@
     PSCustomObject
 
 .PARAMETER Path
-    You can pipeline full path or using Get-ChildItem
+    You can pipeline full path or use Get-ChildItem
 
 .NOTES
     Tested on PowerShell 5.1, Windows 10 Pro
@@ -28,11 +38,13 @@
 
 [CmdletBinding()]
 param (
-    [Parameter(ValueFromPipeline)]
-               [System.IO.FileInfo]$Path
+    [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+    [Alias("Name")]
+               [System.IO.FileInfo]
+               $Path
 )
 
-BEGIN {$shell = New-Object -COMObject Shell.Application}
+BEGIN { $shell = New-Object -COMObject Shell.Application }
 
 PROCESS {
 
@@ -40,7 +52,7 @@ PROCESS {
 
     foreach($currentItem in $Path){
 
-        if ($currentItem.extension -eq '.mp4') {
+        if ($currentItem.extension -eq '.mp4' -and $currentItem.Attributes -ne "Directory") {
 
             $folder = Split-Path $currentItem.FullName
             $file = Split-Path $currentItem.FullName -Leaf
