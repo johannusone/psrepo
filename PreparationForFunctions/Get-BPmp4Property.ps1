@@ -12,7 +12,7 @@
             Height   : vertical pixel count
             FPS      : frames / second
             Comp     : video compression type
-            Bitrate  : average bitrate
+            Bitrate  : average bitrate (kbps)
             Duration : duration in hh:mm:ss
             Path     : full path
             Size     : file size in MB
