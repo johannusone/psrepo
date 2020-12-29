@@ -1,3 +1,5 @@
+# Get-Process chrome | Select-Object Threads, PSResources | .\Show-BPObject.ps1
+
 #############################################################################
 ##
 ## Show-Object
@@ -24,7 +26,12 @@ PS > Show-Object $ps
 param(
     ## The object to examine
     [Parameter(ValueFromPipeline = $true)]
-    $InputObject
+    $InputObject,
+
+    [switch]
+    $WithoutType = $false
+
+
 )
 
 Set-StrictMode -Version 3
@@ -106,15 +113,15 @@ function PopulateNode($node, $object)
             ## its type.
             $childObject = $child.Value
             $childObjectType = $null
-            if($childObject)
+            if($childObject -and !$WithoutType)
             {
-                $childObjectType = $childObject.GetType()
+                $childObjectType = "[$($childObject.GetType())]"
             }
 
             ## Create the new node to add, with the node text of the item and
             ## value, along with its type
             $childNode = New-Object Windows.Forms.TreeNode
-            $childNode.Text = $child.Name + " = $childObject : $childObjectType"
+            $childNode.Text = $child.Name + " : $childObject $childObjectType"
             $childNode.Name = $child.Name
             $null = $node.Nodes.Add($childNode)
 
@@ -216,7 +223,7 @@ function OnKeyPress
         $nodePath = GetPathForNode $node
         [System.Windows.Forms.Clipboard]::SetText($nodePath)
 
-        $form.Close()
+        #$form.Close()
     }
 }
 
@@ -272,11 +279,12 @@ function GetPathForNode
 ## area.
 $treeView = New-Object Windows.Forms.TreeView
 $treeView.Dock = "Top"
-$treeView.Height = 500
+$treeView.Height = 400
 $treeView.PathSeparator = "."
 $treeView.Add_AfterSelect( { OnAfterSelect @args } )
 $treeView.Add_BeforeExpand( { OnBeforeExpand @args } )
 $treeView.Add_KeyPress( { OnKeyPress @args } )
+
 
 ## Create the output pane, which will hold our object
 ## member information.
@@ -285,7 +293,7 @@ $outputPane.Multiline = $true
 $outputPane.ScrollBars = "Vertical"
 $outputPane.Font = "Consolas"
 $outputPane.Dock = "Top"
-$outputPane.Height = 300
+$outputPane.Height = 200
 
 ## Create the root node, which represents the object
 ## we are trying to show.
@@ -302,8 +310,9 @@ PopulateNode $root $InputObject
 ## Finally, create the main form and show it.
 $form = New-Object Windows.Forms.Form
 $form.Text = "Browsing " + $root.Text
+$form.StartPosition = "CenterScreen"
 $form.Width = 1000
-$form.Height = 800
+$form.Height = 640
 $form.Controls.Add($outputPane)
 $form.Controls.Add($treeView)
 $null = $form.ShowDialog()
