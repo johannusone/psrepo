@@ -281,6 +281,7 @@ $treeView = New-Object Windows.Forms.TreeView
 $treeView.Dock = "Top"
 $treeView.Height = 400
 $treeView.PathSeparator = "."
+$treeView.Font = New-Object System.Drawing.Font("Arial", 12)
 $treeView.Add_AfterSelect( { OnAfterSelect @args } )
 $treeView.Add_BeforeExpand( { OnBeforeExpand @args } )
 $treeView.Add_KeyPress( { OnKeyPress @args } )
