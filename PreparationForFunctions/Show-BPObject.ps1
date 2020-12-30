@@ -1,5 +1,3 @@
-# Get-Process chrome | Select-Object Threads, PSResources | .\Show-BPObject.ps1
-
 #############################################################################
 ##
 ## Show-Object
@@ -10,17 +8,15 @@
 ##############################################################################
 
 <#
-
 .SYNOPSIS
-
-Provides a graphical interface to let you explore and navigate an object.
-
+    Provides a graphical interface to let you explore and navigate an object.
 
 .EXAMPLE
+    PS > Get-Process chrome | Select-Object Threads, PSResources | Show-BPObject
 
-PS > $ps = { Get-Process -ID $pid }.Ast
-PS > Show-Object $ps
-
+.PARAMETER NoTypeInformation
+    When -NoTypeInformation switch is specified,
+    the treeview section doesn't show the type information.
 #>
 
 param(
@@ -29,9 +25,7 @@ param(
     $InputObject,
 
     [switch]
-    $WithoutType = $false
-
-
+    $NoTypeInformation = $false
 )
 
 Set-StrictMode -Version 3
@@ -49,7 +43,7 @@ $rootVariableName = Get-ChildItem variable:\* -Exclude InputObject,Args |
 }
 
 ## If we got multiple, pick the first
-$rootVariableName = $rootVariableName| ForEach-Object Name | Select-Object -First 1
+$rootVariableName = $rootVariableName | ForEach-Object Name | Select-Object -First 1
 
 ## If we didn't find one, use a default name
 if(-not $rootVariableName)
@@ -113,7 +107,7 @@ function PopulateNode($node, $object)
             ## its type.
             $childObject = $child.Value
             $childObjectType = $null
-            if($childObject -and !$WithoutType)
+            if($childObject -and !$NoTypeInformation)
             {
                 $childObjectType = " [$($childObject.GetType())]"
             }
@@ -285,7 +279,6 @@ $treeView.Font = "Arial,10"
 $treeView.Add_AfterSelect( { OnAfterSelect @args } )
 $treeView.Add_BeforeExpand( { OnBeforeExpand @args } )
 $treeView.Add_KeyPress( { OnKeyPress @args } )
-
 
 ## Create the output pane, which will hold our object
 ## member information.
