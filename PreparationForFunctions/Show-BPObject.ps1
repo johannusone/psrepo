@@ -115,13 +115,13 @@ function PopulateNode($node, $object)
             $childObjectType = $null
             if($childObject -and !$WithoutType)
             {
-                $childObjectType = "[$($childObject.GetType())]"
+                $childObjectType = " [$($childObject.GetType())]"
             }
 
             ## Create the new node to add, with the node text of the item and
             ## value, along with its type
             $childNode = New-Object Windows.Forms.TreeNode
-            $childNode.Text = $child.Name + " : $childObject $childObjectType"
+            $childNode.Text = $child.Name + "$($childObjectType): $childObject"
             $childNode.Name = $child.Name
             $null = $node.Nodes.Add($childNode)
 
@@ -281,7 +281,7 @@ $treeView = New-Object Windows.Forms.TreeView
 $treeView.Dock = "Top"
 $treeView.Height = 400
 $treeView.PathSeparator = "."
-$treeView.Font = New-Object System.Drawing.Font("Arial", 12)
+$treeView.Font = New-Object System.Drawing.Font("Arial", 10)
 $treeView.Add_AfterSelect( { OnAfterSelect @args } )
 $treeView.Add_BeforeExpand( { OnBeforeExpand @args } )
 $treeView.Add_KeyPress( { OnKeyPress @args } )
@@ -292,7 +292,7 @@ $treeView.Add_KeyPress( { OnKeyPress @args } )
 $outputPane = New-Object System.Windows.Forms.TextBox
 $outputPane.Multiline = $true
 $outputPane.ScrollBars = "Vertical"
-$outputPane.Font = "Consolas"
+$outputPane.Font = New-Object System.Drawing.Font("Consolas", 10) # original "Consolas"
 $outputPane.Dock = "Top"
 $outputPane.Height = 200
 
