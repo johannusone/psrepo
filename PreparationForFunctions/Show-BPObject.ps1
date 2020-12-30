@@ -292,7 +292,7 @@ $treeView.Add_KeyPress( { OnKeyPress @args } )
 $outputPane = New-Object System.Windows.Forms.TextBox
 $outputPane.Multiline = $true
 $outputPane.ScrollBars = "Vertical"
-$outputPane.Font = "Consolas,8"
+$outputPane.Font = "Consolas,9"
 $outputPane.Dock = "Top"
 $outputPane.Height = 200
 
