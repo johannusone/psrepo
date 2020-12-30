@@ -281,7 +281,7 @@ $treeView = New-Object Windows.Forms.TreeView
 $treeView.Dock = "Top"
 $treeView.Height = 400
 $treeView.PathSeparator = "."
-$treeView.Font = New-Object System.Drawing.Font("Arial", 10)
+$treeView.Font = "Arial,10"
 $treeView.Add_AfterSelect( { OnAfterSelect @args } )
 $treeView.Add_BeforeExpand( { OnBeforeExpand @args } )
 $treeView.Add_KeyPress( { OnKeyPress @args } )
@@ -292,7 +292,7 @@ $treeView.Add_KeyPress( { OnKeyPress @args } )
 $outputPane = New-Object System.Windows.Forms.TextBox
 $outputPane.Multiline = $true
 $outputPane.ScrollBars = "Vertical"
-$outputPane.Font = New-Object System.Drawing.Font("Consolas", 10) # original "Consolas"
+$outputPane.Font = "Consolas,8"
 $outputPane.Dock = "Top"
 $outputPane.Height = 200
 
@@ -310,8 +310,9 @@ PopulateNode $root $InputObject
 
 ## Finally, create the main form and show it.
 $form = New-Object Windows.Forms.Form
-$form.Text = "Browsing " + $root.Text
-$form.StartPosition = "CenterScreen"
+$form.Text = "Browsing objects " + $root.Text
+$form.StartPosition = "Manual" # or "CenterScreen" without the line with Location
+$form.Location = "20,20"
 $form.Width = 1000
 $form.Height = 640
 $form.Controls.Add($outputPane)
