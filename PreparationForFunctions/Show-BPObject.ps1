@@ -1,6 +1,6 @@
 #############################################################################
 ##
-## Show-Object
+## Originally: Show-Object
 ##
 ## From Windows PowerShell Cookbook (O'Reilly)
 ## by Lee Holmes (http://www.leeholmes.com/guide)
@@ -25,11 +25,17 @@ param(
     $InputObject,
 
     [switch]
-    $NoTypeInformation = $false
+    $NoTypeInformation = $false,
+
+    [ValidateRange(500,12000)] # TODO 1 - Search for intmax for 2nd parameter
+    [int]
+    $Width = 1000
+
+    # TODO 1 @ Create mutually exclusively parameter sets for Width, Height or predefined sizes
+
 )
 
 Set-StrictMode -Version 3
-
 Add-Type -Assembly System.Windows.Forms
 
 ## Figure out the variable name to use when displaying the
@@ -273,7 +279,7 @@ function GetPathForNode
 ## area.
 $treeView = New-Object Windows.Forms.TreeView
 $treeView.Dock = "Top"
-$treeView.Height = 400
+$treeView.Height = 400 # TODO 1 - Change it to input parameter (TreeView)
 $treeView.PathSeparator = "."
 $treeView.Font = "Arial,10"
 $treeView.Add_AfterSelect( { OnAfterSelect @args } )
@@ -287,7 +293,7 @@ $outputPane.Multiline = $true
 $outputPane.ScrollBars = "Vertical"
 $outputPane.Font = "Consolas,9"
 $outputPane.Dock = "Top"
-$outputPane.Height = 200
+$outputPane.Height = 200 # TODO 1 - Change it to input parameter (TextBox)
 
 ## Create the root node, which represents the object
 ## we are trying to show.
@@ -306,8 +312,8 @@ $form = New-Object Windows.Forms.Form
 $form.Text = "Browsing objects " + $root.Text
 $form.StartPosition = "Manual" # or "CenterScreen" without the line with Location
 $form.Location = "20,20"
-$form.Width = 1000
-$form.Height = 640
+$form.Width = $Width # TODO 1 - Add parameter for main window witdh
+$form.Height = 640 # TODO 1 - Add parameter for main window height
 $form.Controls.Add($outputPane)
 $form.Controls.Add($treeView)
 $null = $form.ShowDialog()
