@@ -55,7 +55,7 @@ function Get-MP4Property {
 
         foreach($currentItem in $Path){
 
-            if (($currentItem.extension -eq '.mp4') -and $currentItem.Attributes -ne ('Directory')) {
+            if (($currentItem.extension -eq '.mp4') -and ($currentItem.Attributes -ne 'Directory')) {
 
                 $folder = Split-Path $currentItem.FullName
                 $file = Split-Path $currentItem.FullName -Leaf
