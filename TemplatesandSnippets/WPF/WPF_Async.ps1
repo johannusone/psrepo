@@ -150,4 +150,4 @@ function Async($scriptBlock) {
 
 Start-RunspaceTask $JobCleanupScript @([PSObject]@{ Name='Jobs' ; Variable=$Jobs })
 
-$Window.ShowDialog()
+$Window.ShowDialog() | Out-Null
