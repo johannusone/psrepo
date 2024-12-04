@@ -3,10 +3,19 @@
 
 function prompt {
 
-    $promptGetLocation = Get-Location
     $promptLastCommand = Get-History -Count 1
-    $promptElapsedTime = ($promptLastCommand.EndExecutionTime - $promptLastCommand.StartExecutionTime).TotalSeconds
-    Write-Host "`n[$($promptElapsedTime) s] -- $promptGetLocation\" -ForegroundColor DarkGreen
-    Write-Host "PS - $($promptGetLocation | Split-Path -Leaf)\>" -NoNewline -ForegroundColor Gray
+    $promptElapsedTime = ([timespan]($promptLastCommand.EndExecutionTime - $promptLastCommand.StartExecutionTime)).TotalSeconds
+    Write-Host "`nExecution time: [$promptElapsedTime s]" -ForegroundColor DarkGray
+
+    $lineCharacterForPrompt       = [string][char]0x2500
+    $promptExecutionSeparatorLine = $lineCharacterForPrompt * $Host.UI.RawUI.WindowSize.Width
+    Write-Host "$promptExecutionSeparatorLine" -ForegroundColor DarkGreen
+
+    $currentLocationForPrompt = $PWD.Path
+    Write-Host "LOCATION: [$currentLocationForPrompt\]" -ForegroundColor DarkGreen
+
+    $global:counterForPowerShellConsolePrompt++
+    Write-Host "[$counterForPowerShellConsolePrompt] - $($currentLocationForPrompt | Split-Path -Leaf)\>" -NoNewline -ForegroundColor Gray
     return " "
+
 }
