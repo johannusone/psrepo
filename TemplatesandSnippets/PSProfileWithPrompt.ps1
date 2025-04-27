@@ -29,4 +29,10 @@ function prompt {
 
 # Set-PSDebug -Trace 0
 
-Write-Host "$('Profile loading time: [{0} s]' -f ((New-TimeSpan -Start $startProfile).TotalSeconds))" -ForegroundColor Green
+$psEdit        = $PSVersionTable.PSEdition
+$versionMajor  = $PSVersionTable.PSVersion.Major
+$versionMinor  = $PSVersionTable.PSVersion.Minor
+$psVerInfo     = "$versionMajor.$versionMinor"
+$psInfoDisplay = "PowerShell $psVerInfo ($psEdit)"
+
+Write-Host "$('{0} - Profile loading time: [{1} s]' -f $psInfoDisplay, ((New-TimeSpan -Start $startProfile).TotalSeconds))" -ForegroundColor Green
